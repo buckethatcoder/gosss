@@ -1,108 +1,128 @@
 import Link from "next/link";
 import { getDailyBriefing } from "../lib/briefing";
 
-// Tell Next.js to never pre-render this page at build time
-// It always fetches fresh data on each request (needs live API keys)
 export const dynamic = "force-dynamic";
 
 const accentMap = {
-  emerald: "#00FF94",
-  purple:  "#C084FC",
-  orange:  "#FB923C",
-  red:     "#F87171",
-  blue:    "#60A5FA",
-  cyan:    "#22D3EE",
+  emerald: "#1a6640",
+  purple:  "#6b21a8",
+  orange:  "#b45309",
+  red:     "#991b1b",
+  blue:    "#1e40af",
+  cyan:    "#0e7490",
 };
 
 export default async function Home() {
   const briefings = await getDailyBriefing();
 
   const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long", month: "long", day: "numeric",
+    weekday: "long", month: "long", day: "numeric", year: "numeric",
   });
 
-  return (
-    <div className="min-h-screen flex flex-col">
+  // Split into two columns
+  const col1 = briefings.slice(0, 3);
+  const col2 = briefings.slice(3);
 
-      {/* Header */}
-      <header className="border-b border-[#EDE8DF]/8 px-12 py-6 flex items-center justify-between animate-fade-up">
-        <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl tracking-tight">
+  return (
+    <div className="min-h-screen flex flex-col max-w-5xl mx-auto px-6">
+
+      {/* Masthead */}
+      <header className="animate-fade-up pt-10 pb-4 flex flex-col items-center gap-1 border-b-4 border-[#1C1208]">
+        <div className="text-xs tracking-[0.3em] uppercase text-[#1C1208]/50" style={{ fontFamily: "var(--font-body)" }}>
+          Est. {new Date().getFullYear()} · Your Daily Intelligence Brief
+        </div>
+        <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 900 }} className="text-7xl tracking-tight text-[#1C1208] leading-none">
           GOSSS
-        </span>
-        <span className="text-xs text-[#EDE8DF]/30 tracking-widest uppercase font-light">
-          {today}
-        </span>
+        </h1>
+        <div className="w-full flex items-center justify-between pt-2 text-[11px] text-[#1C1208]/40" style={{ fontFamily: "var(--font-body)" }}>
+          <span>{today}</span>
+          <span>6 Topics · 20 Minutes</span>
+        </div>
       </header>
 
-      <main className="flex-1 max-w-2xl w-full mx-auto px-12 py-16 flex flex-col gap-12">
+      {/* Headline */}
+      <div className="animate-fade-up py-6 border-b border-[#1C1208]/20 text-center">
+        <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }} className="text-3xl text-[#1C1208]">
+          What is today's GOSSS?
+        </h2>
+      </div>
 
-        {/* Hero text */}
-        <div className="animate-fade-up flex flex-col gap-3">
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl text-[#EDE8DF] leading-[1.1]">
-            What's happening<br />
-            <span style={{ fontStyle: "italic" }}>today?</span>
-          </h1>
-          <p className="text-[#EDE8DF]/35 text-sm font-light tracking-wide">
-            Six topics. Pick one to go deep on.
-          </p>
+      {/* Two-column newspaper layout */}
+      <main className="flex-1 grid grid-cols-2 divide-x divide-[#1C1208]/15 py-8 gap-0 animate-fade-up-delay">
+
+        {/* Column 1 */}
+        <div className="flex flex-col divide-y divide-[#1C1208]/15 pr-8">
+          {col1.map((item) => (
+            <TopicCard key={item.topic} item={item} />
+          ))}
         </div>
 
-        {/* Topic list */}
-        <div className="flex flex-col animate-fade-up-delay">
-          {briefings.map((item, i) => {
-            const accent = accentMap[item.color];
-            const slug = encodeURIComponent(item.topic);
-            return (
-              <Link key={item.topic} href={`/topic/${slug}`}>
-                <div
-                  className="group relative flex flex-col gap-2.5 py-7 border-b border-[#EDE8DF]/8 cursor-pointer transition-all duration-200 hover:pl-4"
-                >
-                  {/* Left accent bar — slides in on hover */}
-                  <div
-                    style={{ backgroundColor: accent }}
-                    className="absolute left-0 top-0 w-0.5 h-0 group-hover:h-full transition-all duration-300 ease-out"
-                  />
-
-                  {/* Topic label */}
-                  <div className="flex items-center justify-between">
-                    <span
-                      style={{ color: accent }}
-                      className="text-[11px] font-semibold uppercase tracking-[0.18em]"
-                    >
-                      {item.emoji} {item.topic}
-                    </span>
-                  </div>
-
-                  {/* Briefing text */}
-                  <p className="text-[#EDE8DF]/60 text-[15px] leading-relaxed font-light group-hover:text-[#EDE8DF]/85 transition-colors">
-                    {item.briefing}
-                  </p>
-
-                  {/* Content pills */}
-                  <div className="flex gap-2 pt-1">
-                    {item.hasArticle && (
-                      <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
-                        Article
-                      </span>
-                    )}
-                    {item.hasVideo && (
-                      <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
-                        Video
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+        {/* Column 2 */}
+        <div className="flex flex-col divide-y divide-[#1C1208]/15 pl-8">
+          {col2.map((item) => (
+            <TopicCard key={item.topic} item={item} />
+          ))}
         </div>
+
       </main>
 
-      <footer className="px-12 py-8 text-center">
-        <span className="text-xs text-[#EDE8DF]/12 uppercase tracking-[0.2em] font-light">
+      {/* Footer */}
+      <footer className="border-t-2 border-[#1C1208] py-4 mb-8 flex items-center justify-between">
+        <span className="text-[10px] tracking-widest uppercase text-[#1C1208]/30" style={{ fontFamily: "var(--font-body)" }}>
+          GOSSS · Daily Edition
+        </span>
+        <span className="text-[10px] tracking-widest uppercase text-[#1C1208]/30" style={{ fontFamily: "var(--font-body)" }}>
           20 minutes · every day
         </span>
       </footer>
+
     </div>
+  );
+}
+
+function TopicCard({ item }) {
+  const accent = {
+    emerald: "#1a6640", purple: "#6b21a8", orange: "#b45309",
+    red:     "#991b1b", blue:   "#1e40af", cyan:   "#0e7490",
+  }[item.color];
+
+  return (
+    <Link href={`/topic/${encodeURIComponent(item.topic)}`}>
+      <div className="group py-6 cursor-pointer">
+
+        {/* Section label — like a newspaper section tag */}
+        <div className="flex items-center gap-2 mb-3">
+          <span
+            style={{ backgroundColor: accent }}
+            className="text-[9px] font-bold uppercase tracking-[0.2em] text-white px-2 py-0.5"
+          >
+            {item.emoji} {item.topic}
+          </span>
+        </div>
+
+        {/* Briefing as lede paragraph */}
+        <p
+          style={{ fontFamily: "var(--font-body)" }}
+          className="text-[15px] leading-relaxed text-[#1C1208]/75 group-hover:text-[#1C1208] transition-colors"
+        >
+          {item.briefing}
+        </p>
+
+        {/* Read more link */}
+        <div className="mt-3 flex items-center gap-3">
+          {item.hasArticle && (
+            <span className="text-[10px] uppercase tracking-wider text-[#1C1208]/30 border border-[#1C1208]/15 px-2 py-0.5">
+              Article
+            </span>
+          )}
+          {item.hasVideo && (
+            <span className="text-[10px] uppercase tracking-wider text-[#1C1208]/30 border border-[#1C1208]/15 px-2 py-0.5">
+              Video
+            </span>
+          )}
+        </div>
+
+      </div>
+    </Link>
   );
 }

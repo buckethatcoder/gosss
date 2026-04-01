@@ -15,51 +15,57 @@ export default async function TopicPage({ params }) {
 
   if (!item) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-[#EDE8DF]/30 text-sm">Topic not found.</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#F7F3EB]">
+        <p className="text-[#1C1208]/40 text-sm">Topic not found.</p>
       </div>
     );
   }
 
   const accentMap = {
-    emerald: "#00FF94", purple: "#C084FC", orange: "#FB923C",
-    red:     "#F87171", blue:   "#60A5FA", cyan:   "#22D3EE", yellow: "#FACC15",
+    emerald: "#1a6640", purple: "#6b21a8", orange: "#b45309",
+    red:     "#991b1b", blue:   "#1e40af", cyan:   "#0e7490", yellow: "#854d0e",
   };
   const accent = accentMap[item.color];
 
-  return (
-    <div className="min-h-screen flex flex-col">
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric",
+  });
 
-      {/* Header */}
-      <header className="border-b border-[#EDE8DF]/8 px-12 py-6 flex items-center justify-between animate-fade-up">
+  return (
+    <div className="min-h-screen flex flex-col max-w-3xl mx-auto px-6">
+
+      {/* Masthead */}
+      <header className="animate-fade-up pt-10 pb-4 flex flex-col items-center gap-1 border-b-4 border-[#1C1208]">
         <Link href="/">
-          <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl tracking-tight hover:opacity-60 transition-opacity cursor-pointer">
+          <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 900 }} className="text-5xl tracking-tight text-[#1C1208] leading-none hover:opacity-70 transition-opacity cursor-pointer">
             GOSSS
-          </span>
+          </h1>
         </Link>
-        <Link href="/">
-          <span className="text-xs text-[#EDE8DF]/30 tracking-widest uppercase font-light hover:text-[#EDE8DF]/60 transition-colors">
-            ← Back
-          </span>
-        </Link>
+        <div className="w-full flex items-center justify-between pt-2 text-[11px] text-[#1C1208]/40">
+          <Link href="/" className="hover:text-[#1C1208]/70 transition-colors">← All Topics</Link>
+          <span>{today}</span>
+        </div>
       </header>
 
-      <main className="flex-1 max-w-2xl w-full mx-auto px-12 py-16 flex flex-col gap-10">
+      <main className="flex-1 py-10 flex flex-col gap-8 animate-fade-up-delay">
 
-        {/* Topic header */}
-        <div className="flex flex-col gap-4 animate-fade-up">
-          <span style={{ color: accent }} className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+        {/* Article header — like a newspaper story */}
+        <div className="flex flex-col gap-4 border-b border-[#1C1208]/15 pb-8">
+          <span
+            style={{ backgroundColor: accent }}
+            className="self-start text-[9px] font-bold uppercase tracking-[0.2em] text-white px-2 py-0.5"
+          >
             {item.emoji} {item.topic}
           </span>
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-4xl text-[#EDE8DF] leading-snug">
-            Today's brief
-          </h1>
-          <p className="text-[#EDE8DF]/45 text-[15px] font-light leading-relaxed">
+
+          <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700 }} className="text-4xl leading-tight text-[#1C1208]">
+            Today's Brief
+          </h2>
+
+          <p style={{ fontFamily: "var(--font-body)", fontStyle: "italic" }} className="text-base text-[#1C1208]/60 leading-relaxed border-l-2 pl-4" style={{ borderColor: accent, fontFamily: "var(--font-body)", fontStyle: "italic" }}>
             {item.briefing}
           </p>
         </div>
-
-        <div className="h-px bg-[#EDE8DF]/8" />
 
         {/* Content */}
         <ContentCard
@@ -71,11 +77,15 @@ export default async function TopicPage({ params }) {
 
       </main>
 
-      <footer className="px-12 py-8 text-center">
-        <span className="text-xs text-[#EDE8DF]/12 uppercase tracking-[0.2em] font-light">
+      <footer className="border-t-2 border-[#1C1208] py-4 mb-8 flex items-center justify-between">
+        <span className="text-[10px] tracking-widest uppercase text-[#1C1208]/30">
+          GOSSS · Daily Edition
+        </span>
+        <span className="text-[10px] tracking-widest uppercase text-[#1C1208]/30">
           20 minutes · every day
         </span>
       </footer>
+
     </div>
   );
 }

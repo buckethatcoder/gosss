@@ -1,43 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'Sora', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Libre Baskerville', serif;
 }
 
 body {
   font-family: var(--font-body);
-  background: #0C0C0C;
-  color: #EDE8DF;
+  background: #F7F3EB;
+  color: #1C1208;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Page load animations */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0);    }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .animate-fade-up {
-  animation: fadeUp 0.5s ease forwards;
+  animation: fadeIn 0.4s ease forwards;
 }
 
 .animate-fade-up-delay {
   opacity: 0;
-  animation: fadeUp 0.5s ease 0.12s forwards;
+  animation: fadeIn 0.4s ease 0.1s forwards;
 }
 
 .animate-fade-up-delay-2 {
   opacity: 0;
-  animation: fadeUp 0.5s ease 0.24s forwards;
+  animation: fadeIn 0.4s ease 0.2s forwards;
 }
 
-/* Subtle grain overlay — adds depth to the dark background */
-body::after {
+/* Subtle paper texture */
+body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 999;
 }

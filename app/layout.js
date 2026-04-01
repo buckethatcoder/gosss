@@ -1,20 +1,20 @@
-import { DM_Serif_Display, Sora } from "next/font/google";
+import { Playfair_Display, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
 
-// DM Serif Display — for the logo, headlines, and big moments
-const dmSerif = DM_Serif_Display({
+// Playfair Display — classic newspaper masthead and headlines
+const playfair = Playfair_Display({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "700", "900"],
   style: ["normal", "italic"],
 });
 
-// Sora — clean, geometric, warm sans-serif for all body text
-// Much more readable than monospace for long-form briefings
-const sora = Sora({
+// Libre Baskerville — old-style serif for body copy, feels like newsprint
+const baskerville = Libre_Baskerville({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata = {
@@ -24,8 +24,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${dmSerif.variable} ${sora.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-[#0C0C0C] text-[#EDE8DF]" style={{ fontFamily: "var(--font-body)" }}>
+    <html lang="en" className={`${playfair.variable} ${baskerville.variable} h-full`}>
+      <body className="min-h-full flex flex-col bg-[#F7F3EB] text-[#1C1208]" style={{ fontFamily: "var(--font-body)" }}>
         {children}
       </body>
     </html>
