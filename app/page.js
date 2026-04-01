@@ -1,65 +1,107 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getDailyBriefing } from "../lib/briefing";
 
-export default function Home() {
+const accentMap = {
+  emerald: "#00FF94",
+  purple:  "#C084FC",
+  orange:  "#FB923C",
+  red:     "#F87171",
+  blue:    "#60A5FA",
+  cyan:    "#22D3EE",
+};
+
+export default async function Home() {
+  const briefings = await getDailyBriefing();
+
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric",
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+    <div className="min-h-screen flex flex-col">
+
+      {/* Header */}
+      <header className="border-b border-[#EDE8DF]/8 px-12 py-6 flex items-center justify-between animate-fade-up">
+        <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl tracking-tight">
+          GOSSS
+        </span>
+        <span className="text-xs text-[#EDE8DF]/30 tracking-widest uppercase font-light">
+          {today}
+        </span>
+      </header>
+
+      <main className="flex-1 max-w-2xl w-full mx-auto px-12 py-16 flex flex-col gap-12">
+
+        {/* Hero text */}
+        <div className="animate-fade-up flex flex-col gap-3">
+          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-5xl text-[#EDE8DF] leading-[1.1]">
+            What's happening<br />
+            <span style={{ fontStyle: "italic" }}>today?</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-[#EDE8DF]/35 text-sm font-light tracking-wide">
+            Six topics. Pick one to go deep on.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Topic list */}
+        <div className="flex flex-col animate-fade-up-delay">
+          {briefings.map((item, i) => {
+            const accent = accentMap[item.color];
+            const slug = encodeURIComponent(item.topic);
+            return (
+              <Link key={item.topic} href={`/topic/${slug}`}>
+                <div
+                  className="group relative flex flex-col gap-2.5 py-7 border-b border-[#EDE8DF]/8 cursor-pointer transition-all duration-200 hover:pl-4"
+                >
+                  {/* Left accent bar — slides in on hover */}
+                  <div
+                    style={{ backgroundColor: accent }}
+                    className="absolute left-0 top-0 w-0.5 h-0 group-hover:h-full transition-all duration-300 ease-out"
+                  />
+
+                  {/* Topic label */}
+                  <div className="flex items-center justify-between">
+                    <span
+                      style={{ color: accent }}
+                      className="text-[11px] font-semibold uppercase tracking-[0.18em]"
+                    >
+                      {item.emoji} {item.topic}
+                    </span>
+                    <span className="text-[#EDE8DF]/20 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                      Read more →
+                    </span>
+                  </div>
+
+                  {/* Briefing text */}
+                  <p className="text-[#EDE8DF]/60 text-[15px] leading-relaxed font-light group-hover:text-[#EDE8DF]/85 transition-colors">
+                    {item.briefing}
+                  </p>
+
+                  {/* Content pills */}
+                  <div className="flex gap-2 pt-1">
+                    {item.article && (
+                      <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
+                        Article
+                      </span>
+                    )}
+                    {item.video && (
+                      <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
+                        Video
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </main>
+
+      <footer className="px-12 py-8 text-center">
+        <span className="text-xs text-[#EDE8DF]/12 uppercase tracking-[0.2em] font-light">
+          20 minutes · every day
+        </span>
+      </footer>
     </div>
   );
 }
