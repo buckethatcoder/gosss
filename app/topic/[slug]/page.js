@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDailyBriefing } from "../../../lib/briefing";
+import { getDailyBriefing, fetchTopicContent } from "../../../lib/briefing";
 import ContentCard from "../../components/ContentCard";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,10 @@ export const dynamic = "force-dynamic";
 export default async function TopicPage({ params }) {
   const { slug } = await params;
   const topic = decodeURIComponent(slug);
-  const briefings = await getDailyBriefing();
+  const [briefings, { article, video }] = await Promise.all([
+    getDailyBriefing(),
+    fetchTopicContent(topic),
+  ]);
   const item = briefings.find(b => b.topic === topic);
 
   if (!item) {
@@ -60,8 +63,8 @@ export default async function TopicPage({ params }) {
 
         {/* Content */}
         <ContentCard
-          article={item.article}
-          video={item.video}
+          article={article}
+          video={video}
           accent={accent}
           topic={item.topic}
         />

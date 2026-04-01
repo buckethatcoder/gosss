@@ -83,12 +83,12 @@ export default async function Home() {
 
                   {/* Content pills */}
                   <div className="flex gap-2 pt-1">
-                    {item.article && (
+                    {item.hasArticle && (
                       <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
                         Article
                       </span>
                     )}
-                    {item.video && (
+                    {item.hasVideo && (
                       <span className="text-[10px] uppercase tracking-wider text-[#EDE8DF]/20 border border-[#EDE8DF]/10 px-2.5 py-1 rounded-sm font-medium">
                         Video
                       </span>
