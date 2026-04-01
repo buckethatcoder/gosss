@@ -25,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${playfair.variable} ${baskerville.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-[#F7F3EB] text-[#1C1208]" style={{ fontFamily: "var(--font-body)" }}>
+      <body className="min-h-full flex flex-col bg-white text-[#111111]" style={{ fontFamily: "var(--font-body)" }}>
         {children}
       </body>
     </html>

@@ -27,10 +27,10 @@ export default function ContentCard({ article, video, accent, topic }) {
         <div style={{ fontFamily: "var(--font-display)", fontStyle: "italic", color: accent }} className="text-6xl font-bold">
           Read.
         </div>
-        <p className="text-[#1C1208]/40 text-sm italic" style={{ fontFamily: "var(--font-body)" }}>
+        <p className="text-[#111111]/40 text-sm italic" style={{ fontFamily: "var(--font-body)" }}>
           Pick another topic or come back tomorrow.
         </p>
-        <button onClick={undo} className="mt-2 text-xs uppercase tracking-widest text-[#1C1208]/25 hover:text-[#1C1208]/50 transition-colors">
+        <button onClick={undo} className="mt-2 text-xs uppercase tracking-widest text-[#111111]/25 hover:text-[#111111]/50 transition-colors">
           undo
         </button>
       </div>
@@ -64,26 +64,26 @@ function ContentItem({ item, accent, topic }) {
   }
 
   return (
-    <div className="flex flex-col gap-3 pb-8 border-b border-[#1C1208]/10">
+    <div className="flex flex-col gap-3 pb-8 border-b border-[#111111]/10">
 
       {/* Section tag */}
-      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1C1208]/35">
+      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#111111]/35">
         {item.type === "video" ? "📹 Video Report" : "📄 Feature"}
       </span>
 
       {/* Headline */}
-      <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700 }} className="text-2xl leading-snug text-[#1C1208]">
+      <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700 }} className="text-2xl leading-snug text-[#111111]">
         {item.title}
       </h3>
 
       {/* Lede */}
-      <p style={{ fontFamily: "var(--font-body)" }} className="text-sm leading-relaxed text-[#1C1208]/60 italic">
+      <p style={{ fontFamily: "var(--font-body)" }} className="text-sm leading-relaxed text-[#111111]/60 italic">
         {item.summary}
       </p>
 
       {/* Byline row */}
-      <div className="flex items-center justify-between pt-1 border-t border-[#1C1208]/10">
-        <span className="text-xs text-[#1C1208]/35" style={{ fontFamily: "var(--font-body)" }}>
+      <div className="flex items-center justify-between pt-1 border-t border-[#111111]/10">
+        <span className="text-xs text-[#111111]/35" style={{ fontFamily: "var(--font-body)" }}>
           {item.source} · {item.duration}
         </span>
         <a
@@ -99,7 +99,7 @@ function ContentItem({ item, accent, topic }) {
 
       {/* Feedback */}
       <div className="flex items-center gap-3">
-        <span className="text-[11px] text-[#1C1208]/30 italic" style={{ fontFamily: "var(--font-body)" }}>Worth your time?</span>
+        <span className="text-[11px] text-[#111111]/30 italic" style={{ fontFamily: "var(--font-body)" }}>Worth your time?</span>
         <button onClick={() => handleVote(1)} className={`text-base transition-all hover:scale-110 ${vote === 1 ? "opacity-100" : "opacity-25 hover:opacity-60"}`}>👍</button>
         <button onClick={() => handleVote(-1)} className={`text-base transition-all hover:scale-110 ${vote === -1 ? "opacity-100" : "opacity-25 hover:opacity-60"}`}>👎</button>
       </div>
