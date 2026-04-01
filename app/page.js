@@ -71,9 +71,6 @@ export default async function Home() {
                     >
                       {item.emoji} {item.topic}
                     </span>
-                    <span className="text-[#EDE8DF]/20 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                      Read more →
-                    </span>
                   </div>
 
                   {/* Briefing text */}
