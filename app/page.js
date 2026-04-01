@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { getDailyBriefing } from "../lib/briefing";
 
+// Tell Next.js to never pre-render this page at build time
+// It always fetches fresh data on each request (needs live API keys)
+export const dynamic = "force-dynamic";
+
 const accentMap = {
   emerald: "#00FF94",
   purple:  "#C084FC",

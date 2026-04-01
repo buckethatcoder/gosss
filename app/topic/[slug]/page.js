@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getDailyBriefing } from "../../../lib/briefing";
 import ContentCard from "../../components/ContentCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function TopicPage({ params }) {
   const { slug } = await params;
   const topic = decodeURIComponent(slug);
